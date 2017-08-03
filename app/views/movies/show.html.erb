@@ -28,12 +28,6 @@
 
     </dl>
 
-<ul>
-  <% Character.where(:movie_id => @movie.id).each do |character| %>
-  <li><a href="/characters/<%= character.id %>"><%= character.name %> </a></li>
-  <% end %>
-</ul>
-
     <div class="btn-group btn-group-justified">
       <a href="/movies" class="btn btn-primary">
         Back
@@ -48,6 +42,12 @@
   </div>
 </div>
 
+<ul>
+  <% Character.where(:movie_id => @movie.id).each do |character| %>
+  <li><a href="/characters/<%= character.id %>"><%= character.name %> </a></li>
+  <% end %>
+</ul>
+
 <div class="row">
   <div class="col-md-12">
     <form action="/create_character" method="post">
@@ -56,12 +56,13 @@
 
       <!-- Label and input for movie_id -->
       <div class="form-group">
-        <label for="movie_id" class="control-label">
-          Movie
-        </label>
 
-        <<%= select_tag("movie_id", options_from_collection_for_select(Movie.all, :id, :title, @character.movie_id), :class => "form-control") %>
-        
+          <div class="form-group">
+
+            <input name="movie_id" type="hidden" value ="<%= @movie.id %>">
+
+          </div>
+          
       </div>
 
       <!-- Label and input for actor_id -->
@@ -70,7 +71,7 @@
           Actor
         </label>
 
-        <input type="text" id="actor_id" name="actor_id" placeholder="Actor" class="form-control" value="<%= @character.actor_id %>">
+        <%= select_tag("actor_id", options_from_collection_for_select(Actor.all, :id, :name), :class => "form-control") %>
       </div>
 
       <!-- Label and input for name -->
@@ -79,11 +80,11 @@
           Name
         </label>
 
-        <input type="text" id="name" name="name" placeholder="Name" class="form-control" value="<%= @character.name %>">
+        <input type="text" id="name" name="name" placeholder="Name" class="form-control" >
       </div>
 
       <button class="btn btn-success">
-        Create Character
+        Create New Character
       </button>
       or
       <a href="/characters">Cancel</a>
